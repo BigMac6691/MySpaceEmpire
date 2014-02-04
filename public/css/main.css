@@ -12,5 +12,11 @@ html
 body
 {
     background-color: black;
+    color: silver;
     height: 100%;
+}
+
+img
+{
+	vertical-align: middle;
 }
