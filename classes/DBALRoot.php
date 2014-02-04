@@ -7,8 +7,8 @@ class DBALRoot extends ServerRoot
 	
 	public function __construct()
 	{
-		$this->db = new mysqli("localhost", "solsimco_default", "1pass2") or $this->handleError(1);
-		$this->db->select_db("solsimco_luzchem") or $this->handleError(2);
+		$this->db = new mysqli("localhost", "mse_player", "helloq66") or $this->handleError(1);
+		$this->db->select_db("myspaceempire") or $this->handleError(2);
 	}
 	
 	public function __destruct()
