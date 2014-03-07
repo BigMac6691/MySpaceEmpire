@@ -23,9 +23,20 @@ header
 	margin-right: 5em;
 }
 
+main
+{
+	margin-left: 3%;
+	margin-right: 3%;
+}
+
 img
 {
 	vertical-align: middle;
+}
+
+input
+{
+	padding: 0.2em;
 }
 
 textarea 

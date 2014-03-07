@@ -3,7 +3,7 @@ class RndGen
 {
 	private $RND_MULTIPLER = 25214903917;
 	private $RND_ADDEND = 11;
-	private $RND_MAX = 4294967296; // 2^32
+	private $RND_MAX = 4294967295; // 2^32
 	
 	private $seed;
 	

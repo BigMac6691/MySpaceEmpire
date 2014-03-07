@@ -1,9 +1,9 @@
 <?php
-require_once('classes/ServerRoot.php');
+require_once("ServerRoot.php");
 
 class DBALRoot extends ServerRoot
 {
-	private $db;
+	protected $db;
 	
 	public function __construct()
 	{
@@ -66,7 +66,7 @@ class DBALRoot extends ServerRoot
 		
 		$log_msg = $log_msg.$err_msg.", database error[".$this->db->error."]".PHP_EOL;
 		
-		error_log($log_msg, 3, $_SERVER['DOCUMENT_ROOT']."/../LuzchemLogs/log_".date('Y_m', $dt_array[1]).".log");
+		error_log($log_msg, 3, $_SERVER['DOCUMENT_ROOT']."/../logs/log_".date('Y_m', $dt_array[1]).".log");
 		
 		exit(json_encode(array('status' => 'ERROR', 'msg' => "[".date('Y-m-d H:i:s', $dt_array[1]).".{$micro}] ".$err_msg, 'resp' => array())));
 	}
