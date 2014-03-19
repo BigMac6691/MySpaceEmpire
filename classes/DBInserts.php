@@ -9,10 +9,10 @@ class DBInserts extends DBALRoot
 		
 		if($sql_id == "create_user")
 		{
-			$stmt = $this->db->prepare("INSERT INTO users VALUES(?, ?, ?, ?, ?, ?,?, ?, ?,?, ?, ?, null, null);");
-			$stmt->bind_param("isssssssssssss", 
+			$stmt = $this->db->prepare("INSERT INTO users VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, null, null);");
+			$stmt->bind_param("isssssssssss", 
 					$p["user_id"], $p["alias"], $p["email"], $p["password"], $p["color1"], $p["color2"], $p["color3"], $p["icon"], 
-					$p["effective"], $p["expiry"], $p["create_dttm"], $_SESSION['validated_user']);
+					$p["effective"], $p["expiry"], $p["create_dttm"], $p["alias"]);
 		}
 		else
 			$this->handleError(21, $sql_id);
