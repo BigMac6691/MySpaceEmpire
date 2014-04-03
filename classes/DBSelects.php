@@ -25,6 +25,11 @@ class DBSelects extends DBALRoot
 							"effective <= current_timestamp AND expiry > current_timestamp AND update_uid IS NULL;");
 			$stmt->bind_param("ss", $p["email"], $p["password"]);
 		}
+		elseif($sql_id == "get_user_details") 
+		{
+			$stmt = $this->db->prepare("SELECT * FROM users WHERE alias = ? AND effective <= current_timestamp AND expiry > current_timestamp AND update_uid IS NULL;");
+			$stmt->bind_param("s", $p["validated_user"]);
+		}
 		else
 			$this->handleError(31, $sql_id);
 		
@@ -41,6 +46,8 @@ class DBSelects extends DBALRoot
 		
 		if($sql_id == "current_timestamp")
 		   $q = "SELECT current_timestamp as db_timestamp;";
+		elseif($sql_id == "joinable_games")
+			$q = "SELECT * FROM game;";
 		else
 			$this->handleError(11, $sql_id);
 		
