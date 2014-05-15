@@ -84,7 +84,7 @@ class CreateGame
 				$dx = $star['star_x'] - $x;
 				$dy = $star['star_y'] - $y;
 
-				if(sqrt($dx * $dx + $dy * $dy) > $buffer)
+				if(sqrt($dx * $dx + $dy * $dy) < $buffer)
 					$test++;
 			}
 
@@ -253,6 +253,7 @@ class CreateGame
 		
 		$this->parms["game_id"] = 0;
 		$this->parms["game_turn"] = 0;
+		$this->parms["game_end"] = "9999-12-31 23:59:59"; // review this later
 		
 		$game_id = $this->db->insert("create_game", $this->parms);
 		

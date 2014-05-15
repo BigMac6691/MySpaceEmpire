@@ -13,7 +13,8 @@ if(isset($_POST['email'], $_POST["password"])  && !isset($_SESSION["validated_us
 	if(!empty($resp))
 	{
 		$_SESSION['validated_user'] = $resp[0]["alias"];
-	
+		$_SESSION['validated_user_id'] = $resp[0]["user_id"];
+		
 		header('Location: user_home.php');
 		exit();
 	}
