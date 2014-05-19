@@ -274,7 +274,33 @@ function improveCivilization(evt)
 	
 	var planet = getPlanet(civ["planet_id"]);
 	
-	document.getElementById("shipyard_title").innerHTML = "Shipyard at " + planet["planet_name"];		
+	document.getElementById("shipyard_title").innerHTML = "Shipyard at " + planet["planet_name"];
+	
+	var shipTypes = "";
+	for(var i = 0; i < SHIP_TYPES.length; i++)
+	{
+		var move = "";
+		if(SHIP_TYPES[i]["move_type"] == 0)
+			move = "Static";
+		else if(SHIP_TYPES[i]["move_type"] == 1)
+			move = "System";
+		else
+			move = "Interstellar";
+		
+		var cost = SHIP_TYPES[i]["mass"] - SHIP_TYPES[i]["cargo_space"];
+		
+		shipTypes += "<tr><td>" + SHIP_TYPES[i]["name"] + "</td>"
+			+ "<td>" + SHIP_TYPES[i]["light_tubes"] + "/" + SHIP_TYPES[i]["medium_tubes"] + "/" + SHIP_TYPES[i]["heavy_tubes"] + "</td>"
+			+ "<td>" + SHIP_TYPES[i]["counter_tubes"] + "</td>"
+			+ "<td>" + SHIP_TYPES[i]["pd_laser_nodes"] + "</td>"
+			+ "<td>" + SHIP_TYPES[i]["fighter_bays"] + "</td>"
+			+ "<td>" + move + "</td>"
+			+ "<td>" + SHIP_TYPES[i]["armour"] + "</td>"
+			+ "<td>" + SHIP_TYPES[i]["cargo_space"] + "</td>"
+			+ "<td>" + cost + "</td></tr>";
+	}
+			
+	document.getElementById("ship_type_table").innerHTML = shipTypes;
 	document.getElementById("shipyard_panel").style.visibility = "visible";
 	
 	retrun;

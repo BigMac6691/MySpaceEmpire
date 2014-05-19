@@ -54,14 +54,14 @@ button
 .Dialog
 {
 	position : fixed;
-	background-color : green;
-	border : 0.25em solid black;
+	background-color : rgba(0, 0, 0, 0.75);
+	border : 0.25em solid silver;
 	padding : 0.1em;
-	top : 50%;
+	top : 25%;
 	left : 50%;
-	width : 38.5em;
-	height : 12em;
-	margin-left : -19em;
+	width : 70em;
+	height : 24em;
+	margin-left : -35em;
 	margin-top : -6em;
 	visibility : hidden;
 	font-family : Verdana;
@@ -73,11 +73,31 @@ button
 	position : absolute;
 	top : -1px;
 	right : -1px;
-	border : 1px solid black;
+	border : 1px solid silver;
 	line-height : 120%;
 	padding : 0.1em 0.5em;
 	margin : 0;
 	font-weight : bold;
 	font-family : sans-serif;
 	cursor:pointer;
+}
+
+.DialogOKButton
+{
+	position : absolute;
+	top:  : 23em;
+	left : 0.1em;
+	border : 1px solid silver;
+	line-height : 120%;
+	margin : 0;
+	font-weight : bold;
+	font-family : sans-serif;
+	cursor:pointer;	
+}
+
+.Rotate90
+{
+	transform:rotate(90deg);
+	-ms-transform:rotate(90deg); /* IE 9 */
+	-webkit-transform:rotate(90deg); /* Opera, Chrome, and Safari */
 }

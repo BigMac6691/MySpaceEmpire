@@ -19,6 +19,7 @@ $db = new DBSelects();
 				$player_data = $db->select("get_player_details", $_POST);
 				$game_data = $db->select("get_game_data", $_POST);
 				$user_data = $db->select("get_user_details", $_SESSION);
+				$ship_type_data = $db->query("get_ship_type_data");
 			?>
 			
 			var STARS = <?php echo json_encode($stars); ?>;
@@ -28,6 +29,7 @@ $db = new DBSelects();
 			var PLAYER = <?php echo json_encode($player_data); ?>;
 			var GAME = <?php echo json_encode($game_data); ?>;
 			var PLAYERS = <?php echo json_encode($user_data); ?>;
+			var SHIP_TYPES = <?php echo json_encode($ship_type_data); ?>
 		
 			window.onload = function()
 			{
@@ -123,8 +125,40 @@ $db = new DBSelects();
 		</div>
 		<div id="shipyard_panel" class="Dialog">
 			<button id="close" onclick="document.getElementById('shipyard_panel').style.visibility = 'hidden';" class="DialogCloseButton">X</button>
-			<p id="shipyard_title" style="text-align:center; margin: 0 0 0.25em 0;">Shipyard</p>
-         		<textarea id="copy_area" wrap="hard" style="font-family: Verdana; font-size: 1em; width:38em; height:10em;">Default</textarea>
+			<p id="shipyard_title" style="text-align:center; margin: 0 0 0.25em 0; font-weight: bold; color: red; background-color: silver;">Shipyard</p>
+         	<div style="display: inline-block; vertical-align: top;">
+            	<table style="margin-bottom: 0.5em; border-right-width: 1em; border-right-color: #FFFFFF;">
+                	<thead>
+                        <th>Name</th>
+                        <th>Count</th>
+                    </thead>
+                    <tbody id="child_table"></tbody>
+                </table>
+            </div>
+            <div style="display: inline-block; width: 4em; margin-top: 8.5em;">
+            	<button class="Rotate90" style="height: 3.5em;" onclick="alert('up');">&lt;</button>
+            	<button onclick="alert('add');">&lt;</button>
+            	<button onclick="alert('remove');">&gt;</button>
+            	<button class="Rotate90" style="height: 3.5em;" onclick="alert('down');">&gt;</button>
+            </div>
+            <div style="display: inline-block; vertical-align: top;">
+                <table style="margin-bottom: 0.5em;">
+                	<thead>
+                    	<th>Name</th>
+                    	<th>Tubes S/M/L</th>
+                    	<th>Counter</th>
+                    	<th>Laser</th>
+                    	<th>Fighter</th>
+                    	<th>Move</th>
+                    	<th>Armour</th>
+                    	<th>Cargo</th>
+                    	<th>Cost</th>
+                    </thead>
+                    <tbody id="ship_type_table"></tbody>
+                </table>
+            </div>
+            <div style="clear: both;"></div>
+            <button id="ok" onclick="alert('OK');" class="DialogOKButton">OK</button>
 		</div>
 	</body>
 </html>

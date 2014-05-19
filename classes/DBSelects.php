@@ -96,6 +96,8 @@ class DBSelects extends DBALRoot
 		   $q = "SELECT current_timestamp as db_timestamp;";
 		elseif($sql_id == "joinable_games")
 			$q = "SELECT * FROM game;";
+		elseif($sql_id == "get_ship_type_data")
+			$q = "SELECT * FROM ship_type;";
 		else
 			$this->handleError(11, $sql_id);
 		
