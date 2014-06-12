@@ -62,6 +62,11 @@ class DBSelects extends DBALRoot
 			$stmt = $this->db->prepare("SELECT * FROM civilization WHERE game_id = ?;");
 			$stmt->bind_param("i", $p["game_id"]);
 		}
+		elseif($sql_id == "get_build_queue_data") // may need to filter to a particular player
+		{
+			$stmt = $this->db->prepare("SELECT * FROM build_queue WHERE game_id = ?;");
+			$stmt->bind_param("i", $p["game_id"]);
+		}
 		elseif($sql_id == "get_potential_home_planets")
 		{
 			$stmt = $this->db->prepare("SELECT p.* FROM planets as p, (SELECT star_id, sum(planet_owner) as taken FROM planets WHERE game_id = ? GROUP BY star_id) as p2 ".

@@ -38,11 +38,11 @@ if(isset($_POST['alias'], $_POST['email'], $_POST['password'], $_POST['color1'],
 			}
 		
 			var ICONS = [{svg : '<text x="50" y="50" style="text-anchor: middle; dominant-baseline: central; fill:silver;">ICON</text><rect width="100%" height="100%" style="stroke:gold; stroke-width:2; fill:none;" />'}, 
-						 {svg : '<rect width="100%" height="100%" style="fill:#color1;" /><line x1="25" y1="0" x2="25" y2="100" style="stroke:#color2; stroke-width: 3" /><line x1="0" y1="50" x2="100" y2="50" style="stroke:#color2; stroke-width: 3" /><circle cx="25" cy="50" r="15" style="fill:#color3;" />'},
-						 {svg : '<rect width="100%" height="100%" style="fill:#color1;" /><line x1="0" y1="0" x2="100" y2="100" style="stroke:#color2; stroke-width: 9" /><line x1="100" y1="0" x2="0" y2="100" style="stroke:#color2; stroke-width: 9" />'},
-						 {svg : '<rect width="100%" height="100%" style="fill:#color1;" /><circle cx="50" cy="50" r="25" style="fill:#color3;" />'},
-						 {svg : '<rect width="100%" height="100%" style="fill:#color1;" /><polygon points="50,0 100,50 50,100 0,50" style="fill:#color2; stroke:#color3; stroke-width:3;"'},
-						 {svg : '<rect width="100%" height="100%" style="fill:#color1;" /><polygon points="50,10 90,50 50,90 10,50" style="fill:#color2; stroke:#color3; stroke-width:3;"'}];
+							 {svg : '<rect width="100%" height="100%" style="fill:#color1;" /><line x1="25" y1="0" x2="25" y2="100" style="stroke:#color2; stroke-width: 3" /><line x1="0" y1="50" x2="100" y2="50" style="stroke:#color2; stroke-width: 3" /><circle cx="25" cy="50" r="15" style="fill:#color3;" />'},
+							 {svg : '<rect width="100%" height="100%" style="fill:#color1;" /><line x1="0" y1="0" x2="100" y2="100" style="stroke:#color2; stroke-width: 9" /><line x1="100" y1="0" x2="0" y2="100" style="stroke:#color2; stroke-width: 9" />'},
+							 {svg : '<rect width="100%" height="100%" style="fill:#color1;" /><circle cx="50" cy="50" r="25" style="fill:#color3;" />'},
+							 {svg : '<rect width="100%" height="100%" style="fill:#color1;" /><polygon points="50,0 100,50 50,100 0,50" style="fill:#color2; stroke:#color3; stroke-width:3;"'},
+							 {svg : '<rect width="100%" height="100%" style="fill:#color1;" /><polygon points="50,10 90,50 50,90 10,50" style="fill:#color2; stroke:#color3; stroke-width:3;"'}];
 			var ICONS_INDEX = 0;
 			var FIELD_VALID = {alias : false, email : false, password : false, icon : false};
 

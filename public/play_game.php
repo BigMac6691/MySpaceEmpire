@@ -10,6 +10,7 @@ $db = new DBSelects();
 		<meta charset="UTF-8">
 		<title>My Space Empire - Game On!</title>
 		<link rel="stylesheet" href="css/main.css" media="screen" />
+		<link rel="stylesheet" href="css/dual_list.css" media="screen" />
 		<script>
 			<?php
 				$stars = $db->select("game_stars", $_POST);
@@ -20,6 +21,9 @@ $db = new DBSelects();
 				$game_data = $db->select("get_game_data", $_POST);
 				$user_data = $db->select("get_user_details", $_SESSION);
 				$ship_type_data = $db->query("get_ship_type_data");
+				$build_queue_data = $db->select("get_build_queue_data", $_POST);
+				
+				include("js/DualList.js");
 			?>
 			
 			var STARS = <?php echo json_encode($stars); ?>;
@@ -29,7 +33,69 @@ $db = new DBSelects();
 			var PLAYER = <?php echo json_encode($player_data); ?>;
 			var GAME = <?php echo json_encode($game_data); ?>;
 			var PLAYERS = <?php echo json_encode($user_data); ?>;
-			var SHIP_TYPES = <?php echo json_encode($ship_type_data); ?>
+			var SHIP_TYPES = <?php echo json_encode($ship_type_data); ?>;
+			var BUILD_QUEUE = <?php echo json_encode($build_queue_data); ?>;
+			
+			var SHIPYARD_DIALOG = {};
+			
+			function calculateShipCost(ship)
+			{
+				return (ship["mass"] - ship["cargo_space"]) * (ship["move_type"] / 2 + 0.5);
+			}
+			
+			function shipyardLeftRowFormatter()
+			{
+				var shipTypes = "";
+				for(var i = 0; i < this.leftData.length; i++)
+				{
+					var move = "";
+					if(this.leftData[i]["move_type"] == 0)
+						move = "Static";
+					else if(this.leftData[i]["move_type"] == 1)
+						move = "System";
+					else
+						move = "Interstellar";
+		
+					var cost = (this.leftData[i]["mass"] - this.leftData[i]["cargo_space"]) * (this.leftData[i]["move_type"] / 2 + 0.5);
+		
+					shipTypes += "<tr><td>" + this.leftData[i]["name"] + "</td>"
+					+ "<td>" + this.leftData[i]["light_tubes"] + "/" + this.leftData[i]["medium_tubes"] + "/" + this.leftData[i]["heavy_tubes"] + "</td>"
+					+ "<td>" + this.leftData[i]["counter_tubes"] + "</td>"
+					+ "<td>" + this.leftData[i]["pd_laser_nodes"] + "</td>"
+					+ "<td>" + this.leftData[i]["fighter_bays"] + "</td>"
+					+ "<td>" + move + "</td>"
+					+ "<td>" + this.leftData[i]["armour"] + "</td>"
+					+ "<td>" + this.leftData[i]["cargo_space"] + "</td>"
+					+ "<td>" + calculateShipCost(this.leftData[i]) + "</td></tr>";
+				}
+	
+				return shipTypes;
+			}
+			
+			function shipyardRightRowFormatter()
+			{
+				var content = "";
+	
+				for(var i = 0; i < this.rightData.length; i++)
+					content += "<tr><td>" + this.rightData[i]["name"] + "</td><td>1</td></tr>";
+					
+				return content;
+			}
+			
+			function handleShipyardOrder(q, src)
+			{
+				if(q.length == 0)
+					return;
+				
+				for(var i = 0; i < BUILD_QUEUE.length;)
+					if(BUILD_QUEUE[i]["civilization_id"] == src["civilization_id"] && BUILD_QUEUE[i]["queue_type"] == 0)
+						BUILD_QUEUE.splice(i, 1);
+					else
+						i++;
+				
+				for(var i = 0; i < q.length; i++)
+					BUILD_QUEUE.push({game_id : src["game_id"], civilization_id : src["civilization_id"], queue_type : 0, item_sqnbr : i, item_id : q[i]["ship_type_id"]});
+			}
 		
 			window.onload = function()
 			{
@@ -39,6 +105,11 @@ $db = new DBSelects();
    			CURSOR.appendChild(GUI.createSVGObject("animate", ["dur", "1.5s", "values", "0;1;0", "attributeName", "opacity", "repeatCount", "indefinite"]));
                                            
    			map.parentNode.appendChild(CURSOR);
+   			
+   			//(div, title, rows, dLeft, dRight, fLeft, fRight, hLeft, rHead, callback)
+   			var leftHeader = ["Name", "Tubes S/M/L", "Counter", "Laser", "Fighter", "Move", "Armour", "Cargo", "Cost"];
+   			var rightHeader = ["Name", "Count"];
+   			SHIPYARD_DIALOG = new DualList("shipyard_panel", "", 15, SHIP_TYPES, [], shipyardLeftRowFormatter, shipyardRightRowFormatter, leftHeader, rightHeader, handleShipyardOrder);
    			
    			drawGalaxyMap();
    			updatePlayerData();
@@ -123,42 +194,7 @@ $db = new DBSelects();
 			<div style="clear: both;"></div>
 			<div id="info_panel" style="margin-top: 0.5em;"></div>
 		</div>
-		<div id="shipyard_panel" class="Dialog">
-			<button id="close" onclick="document.getElementById('shipyard_panel').style.visibility = 'hidden';" class="DialogCloseButton">X</button>
-			<p id="shipyard_title" style="text-align:center; margin: 0 0 0.25em 0; font-weight: bold; color: red; background-color: silver;">Shipyard</p>
-         	<div style="display: inline-block; vertical-align: top;">
-            	<table style="margin-bottom: 0.5em; border-right-width: 1em; border-right-color: #FFFFFF;">
-                	<thead>
-                        <th>Name</th>
-                        <th>Count</th>
-                    </thead>
-                    <tbody id="child_table"></tbody>
-                </table>
-            </div>
-            <div style="display: inline-block; width: 4em; margin-top: 8.5em;">
-            	<button class="Rotate90" style="height: 3.5em;" onclick="alert('up');">&lt;</button>
-            	<button onclick="alert('add');">&lt;</button>
-            	<button onclick="alert('remove');">&gt;</button>
-            	<button class="Rotate90" style="height: 3.5em;" onclick="alert('down');">&gt;</button>
-            </div>
-            <div style="display: inline-block; vertical-align: top;">
-                <table style="margin-bottom: 0.5em;">
-                	<thead>
-                    	<th>Name</th>
-                    	<th>Tubes S/M/L</th>
-                    	<th>Counter</th>
-                    	<th>Laser</th>
-                    	<th>Fighter</th>
-                    	<th>Move</th>
-                    	<th>Armour</th>
-                    	<th>Cargo</th>
-                    	<th>Cost</th>
-                    </thead>
-                    <tbody id="ship_type_table"></tbody>
-                </table>
-            </div>
-            <div style="clear: both;"></div>
-            <button id="ok" onclick="alert('OK');" class="DialogOKButton">OK</button>
+		<div id="shipyard_panel" class="DualList">
 		</div>
 	</body>
 </html>

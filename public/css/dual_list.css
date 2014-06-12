@@ -1,0 +1,91 @@
+table
+{
+	border-collapse:collapse;
+}
+
+td
+{
+	text-align : right;
+	border: 1px solid white;
+	padding-right: 0.5em;
+}
+
+th
+{
+	background-color: rgba(0, 96, 0, 0.75);
+	cursor : default;
+	padding-right: 0.5em;
+}
+
+tbody
+{
+	cursor : pointer;
+}
+
+.DualList
+{
+	position : fixed;
+	background-color : rgba(0, 0, 0, 0.75);
+	border : 0.25em solid silver;
+	top : 25%;
+	left : 50%;
+	width : 70em;
+	height : 24em;
+	margin-left : -35em;
+	visibility : hidden;
+	font-family : Verdana;
+	font-size : 1em;
+}
+
+.DualListCloseButton
+{
+	position : absolute;
+	top : -1px;
+	right : -1px;
+	border : 1px solid silver;
+	line-height : 120%;
+	padding : 0.1em 0.5em;
+	margin : 0;
+	font-weight : bold;
+	font-family : sans-serif;
+	cursor:pointer;
+}
+
+.DualListOKButton
+{
+	position : absolute;
+	bottom : 0.25em;
+	left : 0.25em;
+	line-height : 120%;
+	margin : 0;
+	font-weight : bold;
+	font-family : sans-serif;
+	cursor:pointer;	
+}
+
+.DualListTitle
+{
+	text-align:center;
+	margin: 0 0 0.25em 0;
+	line-height : 110%;
+	padding-bottom : 0.15em;
+	font-weight: bold;
+	color: red;
+	background-color: silver;
+	cursor : default;
+}
+
+.DualListTableDiv
+{
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 0.5em;
+	margin-right: 0.25em;
+}
+
+.DualListRotate90
+{
+	transform:rotate(90deg);
+	-ms-transform:rotate(90deg); /* IE 9 */
+	-webkit-transform:rotate(90deg); /* Opera, Chrome, and Safari */
+}

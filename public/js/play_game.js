@@ -253,9 +253,9 @@ function updateInfoPanel(id)
 		{
 			var civ = getPlanetCivilization(planets[i]["planet_id"]);
 
-			data += ("<p style='margin-left: 1em; color: green;'>P:" + civ["population"]);
-			data += ("<span id='" + civ["civilization_id"] + "_industry" + "' style='margin-left: 1em; color: green;' onclick='improveCivilization(this);'>I:" + civ["industry"] + "</span>");
-			data += ("<span id='" + civ["civilization_id"] + "_shipyard" + "' style='margin-left: 1em; color: green;' onclick='improveCivilization(this);'>S:" + civ["shipyard"] + "</span></p>");
+			data += ("<p style='margin-left: 1em; color: green; cursor : default;'>P:" + civ["population"]);
+			data += ("<span id='" + civ["civilization_id"] + "_industry" + "' style='margin-left: 1em; color: green; cursor : pointer;' onclick='improveCivilization(this);'>I:" + civ["industry"] + "</span>");
+			data += ("<span id='" + civ["civilization_id"] + "_shipyard" + "' style='margin-left: 1em; color: green; cursor : pointer;' onclick='improveCivilization(this);'>S:" + civ["shipyard"] + "</span></p>");
 		}
 	}
 
@@ -271,39 +271,18 @@ function improveCivilization(evt)
 	for (var i = 0; i < CIVILIZATIONS.length && civ == null; i++)
 		if (CIVILIZATIONS[i]["civilization_id"] == id)
 			civ = CIVILIZATIONS[i];
+
+	var data = [];			
+	for(var i = 0; i < BUILD_QUEUE.length; i++)
+		if(BUILD_QUEUE[i]["civilization_id"] == civ["civilization_id"] && BUILD_QUEUE[i]["queue_type"] == 0)
+			data.push(SHIP_TYPES[BUILD_QUEUE[i]["item_id"] - 1]);
 	
 	var planet = getPlanet(civ["planet_id"]);
 	
-	document.getElementById("shipyard_title").innerHTML = "Shipyard at " + planet["planet_name"];
+	SHIPYARD_DIALOG.setRightData(data);
+	SHIPYARD_DIALOG.show("Shipyard at " + planet["planet_name"], civ);
 	
-	var shipTypes = "";
-	for(var i = 0; i < SHIP_TYPES.length; i++)
-	{
-		var move = "";
-		if(SHIP_TYPES[i]["move_type"] == 0)
-			move = "Static";
-		else if(SHIP_TYPES[i]["move_type"] == 1)
-			move = "System";
-		else
-			move = "Interstellar";
-		
-		var cost = SHIP_TYPES[i]["mass"] - SHIP_TYPES[i]["cargo_space"];
-		
-		shipTypes += "<tr><td>" + SHIP_TYPES[i]["name"] + "</td>"
-			+ "<td>" + SHIP_TYPES[i]["light_tubes"] + "/" + SHIP_TYPES[i]["medium_tubes"] + "/" + SHIP_TYPES[i]["heavy_tubes"] + "</td>"
-			+ "<td>" + SHIP_TYPES[i]["counter_tubes"] + "</td>"
-			+ "<td>" + SHIP_TYPES[i]["pd_laser_nodes"] + "</td>"
-			+ "<td>" + SHIP_TYPES[i]["fighter_bays"] + "</td>"
-			+ "<td>" + move + "</td>"
-			+ "<td>" + SHIP_TYPES[i]["armour"] + "</td>"
-			+ "<td>" + SHIP_TYPES[i]["cargo_space"] + "</td>"
-			+ "<td>" + cost + "</td></tr>";
-	}
-			
-	document.getElementById("ship_type_table").innerHTML = shipTypes;
-	document.getElementById("shipyard_panel").style.visibility = "visible";
-	
-	retrun;
+	return;
 
 	var intRegex = /^\d+$/;
 	var value = 0 / 0;

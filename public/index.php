@@ -19,11 +19,16 @@ if(isset($_POST['email'], $_POST["password"])  && !isset($_SESSION["validated_us
 		exit();
 	}
 }
+elseif(isset($_SESSION["validated_user"]))// get here if session is not expired and you try to login in again
+{
+	header('Location: user_home.php');
+	exit();
+}
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8">
+		<meta charset="UTF-8" />
 		<title>My Space Empire - Log In</title>
 		<link rel="stylesheet" href="css/main.css" type="text/css" media="screen" />
 	</head>
