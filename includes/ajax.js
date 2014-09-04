@@ -34,15 +34,15 @@ function AJAX(url, callback)
 		}
 	}
 
-	this.doGet = function()
+	this.doGet = function(async)
 	{
-		req.open("GET", url, true);
+		req.open("GET", url, async);
 		req.send(null);
 	}
 
-	this.doPost = function(body)
+	this.doPost = function(body, async)
 	{
-		req.open("POST", url, true);
+		req.open("POST", url, async);
 		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		req.setRequestHeader("Content-length", body.length);
 		req.setRequestHeader("Connection", "close");

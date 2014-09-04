@@ -38,10 +38,10 @@ DualList.prototype.init = function()
 	}
 	
 	content += "<div style='display: inline-block; margin-top: " + (this.visibleRows / 2) + "em;'><table><tbody>"
-					+ "<tr><td colspan='2' style='vertical-align:middle; text-align: center;'><button id='" + this.container + "_upButton' class='DualListRotate90'>&lt;</button></td></tr>"
-            	+ "<tr><td><button id='" + this.container + "_removeButton'>&lt;</button></td>"
-            	+ "<td><button id='" + this.container + "_addButton'>&gt;</button></td></tr>"
-            	+ "<tr><td colspan='2' style='vertical-align:middle; text-align: center;'><button id='" + this.container + "_downButton' class='DualListRotate90'>&gt;</button></td></tr>"
+					+ "<tr><td colspan='2' class='NavButtonsTopBottom'><button id='" + this.container + "_upButton' class='DualListRotate90'>&lt;</button></td></tr>"
+            	+ "<tr><td style='border: 0;'><button id='" + this.container + "_removeButton'>&lt;</button></td>"
+            	+ "<td style='border: 0; padding-left: 1.25em; padding-right: 0;'><button id='" + this.container + "_addButton'>&gt;</button></td></tr>"
+            	+ "<tr><td colspan='2' class='NavButtonsTopBottom'><button id='" + this.container + "_downButton' class='DualListRotate90'>&gt;</button></td></tr>"
             	+ "</tbody></table></div>";
 	
 	if(this.rightHeader)
@@ -65,9 +65,10 @@ DualList.prototype.init = function()
 	document.getElementById(this.container + "_leftTable").innerHTML = this.formatLeft();
 	
 	var leftBody = document.getElementById(this.container + "_leftTable");
+	var src = this;
 	
 	for(var i = 0; i < leftBody.rows.length; i++)
-		leftBody.rows[i].onclick = function(src, i){return function(){src.setLeftSelection(event, i);};}(this, i);
+		leftBody.rows[i].onclick = (function(){var ri = i; return function(event){src.setLeftSelection(event, ri);};})(i);
 }
 
 DualList.prototype.setTitle = function(t)
@@ -96,6 +97,8 @@ DualList.prototype.show = function(t, src)
 	
 	this.source = src;
 	
+	this.setRightData(this.rightData);
+	
 	document.getElementById(this.container).style.visibility = 'visible';
 }
 
@@ -114,9 +117,10 @@ DualList.prototype.up = function()
 	
 	var rightBody = document.getElementById(this.container + "_rightTable");
 	var evt = {currentTarget : rightBody.rows[this.rightIndex]};
+	var src = this;
 	
 	for(var i = 0; i < rightBody.rows.length; i++)
-		rightBody.rows[i].onclick = function(src, i){return function(){src.setRightSelection(event, i);};}(this, i);
+		rightBody.rows[i].onclick = (function(){var ri = i; return function(event){src.setRightSelection(event, ri);};})(i);
 		
 	this.setRightSelection(evt, this.rightIndex);
 }
@@ -131,9 +135,10 @@ DualList.prototype.add = function()
 	document.getElementById(this.container + "_rightTable").innerHTML = this.formatRight();
 	
 	var rightBody = document.getElementById(this.container + "_rightTable");
+	var src = this;
 	
 	for(var i = 0; i < rightBody.rows.length; i++)
-		rightBody.rows[i].onclick = function(src, i){return function(){src.setRightSelection(event, i);};}(this, i);
+		rightBody.rows[i].onclick = (function(){var ri = i; return function(event){src.setRightSelection(event, ri);};})(i);
 }
 
 DualList.prototype.remove = function()
@@ -146,9 +151,10 @@ DualList.prototype.remove = function()
 	document.getElementById(this.container + "_rightTable").innerHTML = this.formatRight();
 	
 	var rightBody = document.getElementById(this.container + "_rightTable");
+	var src = this;
 	
 	for(var i = 0; i < rightBody.rows.length; i++)
-		rightBody.rows[i].onclick = function(src, i){return function(){src.setRightSelection(event, i);};}(this, i);
+		rightBody.rows[i].onclick = (function(){var ri = i; return function(event){src.setRightSelection(event, ri);};})(i);
 		
 	this.rightIndex--;
 	
@@ -175,9 +181,10 @@ DualList.prototype.down = function()
 	document.getElementById(this.container + "_rightTable").innerHTML = this.formatRight();
 	
 	var rightBody = document.getElementById(this.container + "_rightTable");
+	var src = this;
 	
 	for(var i = 0; i < rightBody.rows.length; i++)
-		rightBody.rows[i].onclick = function(src, i){return function(){src.setRightSelection(event, i);};}(this, i);
+		rightBody.rows[i].onclick = (function(){var ri = i; return function(event){src.setRightSelection(event, ri);};})(i);
 		
 	this.setRightSelection({currentTarget : rightBody.rows[this.rightIndex]}, this.rightIndex);
 }
@@ -220,7 +227,8 @@ DualList.prototype.setRightData = function(data)
 	document.getElementById(this.container + "_rightTable").innerHTML = this.formatRight();
 	
 	var rightBody = document.getElementById(this.container + "_rightTable");
+	var src = this;
 	
 	for(var i = 0; i < rightBody.rows.length; i++)
-		rightBody.rows[i].onclick = function(src, i){return function(){src.setRightSelection(event, i);};}(this, i);
+		rightBody.rows[i].onclick = (function(){var ri = i; return function(event){src.setRightSelection(event, ri);};})(i);
 }

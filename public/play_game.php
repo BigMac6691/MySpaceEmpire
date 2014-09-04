@@ -10,6 +10,7 @@ $db = new DBSelects();
 		<meta charset="UTF-8">
 		<title>My Space Empire - Game On!</title>
 		<link rel="stylesheet" href="css/main.css" media="screen" />
+		<link rel="stylesheet" href="css/play_game.css" media="screen" />
 		<link rel="stylesheet" href="css/dual_list.css" media="screen" />
 		<script>
 			<?php
@@ -21,7 +22,7 @@ $db = new DBSelects();
 				$game_data = $db->select("get_game_data", $_POST);
 				$user_data = $db->select("get_user_details", $_SESSION);
 				$ship_type_data = $db->query("get_ship_type_data");
-				$build_queue_data = $db->select("get_build_queue_data", $_POST);
+				$industry_data = $db->select("get_industry_data", $_POST);
 				
 				include("js/DualList.js");
 			?>
@@ -30,11 +31,13 @@ $db = new DBSelects();
 			var WORMHOLES = <?php echo json_encode($wormholes); ?>;
 			var PLANETS = <?php echo json_encode($planets); ?>;
 			var CIVILIZATIONS = <?php echo json_encode($civilizations); ?>;
-			var PLAYER = <?php echo json_encode($player_data); ?>;
+			var PLAYER = <?php echo json_encode($user_data[0]); ?>;
 			var GAME = <?php echo json_encode($game_data); ?>;
-			var PLAYERS = <?php echo json_encode($user_data); ?>;
+			var PLAYERS = <?php echo json_encode($player_data); ?>;
 			var SHIP_TYPES = <?php echo json_encode($ship_type_data); ?>;
-			var BUILD_QUEUE = <?php echo json_encode($build_queue_data); ?>;
+			var BUILD_QUEUE = {};
+			var INDUSTRY = <?php echo json_encode($industry_data); ?>;
+			var ORDERS = new Array();
 			
 			var SHIPYARD_DIALOG = {};
 			
@@ -109,7 +112,7 @@ $db = new DBSelects();
    			//(div, title, rows, dLeft, dRight, fLeft, fRight, hLeft, rHead, callback)
    			var leftHeader = ["Name", "Tubes S/M/L", "Counter", "Laser", "Fighter", "Move", "Armour", "Cargo", "Cost"];
    			var rightHeader = ["Name", "Count"];
-   			SHIPYARD_DIALOG = new DualList("shipyard_panel", "", 15, SHIP_TYPES, [], shipyardLeftRowFormatter, shipyardRightRowFormatter, leftHeader, rightHeader, handleShipyardOrder);
+   			SHIPYARD_DIALOG = new DualList("shipyard_panel", "", 11, SHIP_TYPES, [], shipyardLeftRowFormatter, shipyardRightRowFormatter, leftHeader, rightHeader, handleShipyardOrder);
    			
    			drawGalaxyMap();
    			updatePlayerData();
@@ -144,9 +147,14 @@ $db = new DBSelects();
 			<div style="width: 3em; height: 3em; float: right; margin-top: 1em; margin-right: 0.5em;">
 				<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 100 100'> 
 					<defs>
-						<symbol id='<?php echo $_SESSION["validated_user"] ?>_logo' viewBox='0 0 100 100'>
-						<?php echo $user_data[0]["icon"]; ?>
-						</symbol>
+						<?php
+						foreach($player_data as $player)
+						{
+							echo "<symbol id='".$player["alias"]."_logo' viewBox='0 0 100 100'>";
+							echo $player["icon"];
+							echo "</symbol>";
+						}
+						?>
 					</defs>
 					<use x='0' y='0' width='100' height='100' xlink:href='#<?php echo $_SESSION["validated_user"] ?>_logo' />
 				</svg>
@@ -154,11 +162,8 @@ $db = new DBSelects();
 		</header>
 		<div style="clear: both;"></div>
 		<div style="display: inline-block; margin-left: 1em; width:70%; height:90%; border: 3px solid blue; margin-top: 0.5em;">
-			<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width="100%" height="100%" viewBox='0 0 1000 1000' preserveAspectRatio="none"> 
+			<svg id="svg_map_root" xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width="100%" height="100%" viewBox='0 0 1000 1000' preserveAspectRatio="none"> 
 				<defs>
-					<symbol id='<?php echo $_SESSION["validated_user"] ?>_logo' viewBox='0 0 100 100'>
-						<?php echo $user_data[0]["icon"]; ?>
-					</symbol>
 					<symbol id="wormhole_svg" viewBox="0 0 100 100">
 						<circle cx="50" cy="50" r="50" fill="black" />
 						<circle cx="50" cy="50" r="50" fill="aqua">
@@ -187,6 +192,8 @@ $db = new DBSelects();
 				</defs>
 				<g id="game_map">
 				</g>
+				<rect id="info_box" x="0" y="-1000" width="60" height="20" rx="3" ry="3" opacity="0.75" style="fill:gray; pointer-events:none;"/>
+				<text id="info_text" x="0" y="-1000" style="pointer-events:none;">Info</text>
 			</svg>
 		</div>
 		<div style="display: inline-block; vertical-align: top; width: 25%;">

@@ -33,7 +33,7 @@ require("../../includes/ensure_admin_logon.php");
 				
 				var req = new AJAX("ajax_admin/ajax_create_game.php", handleResponse);
 				
-				req.doPost("parms=" + JSON.stringify(JSONObject));
+				req.doPost("parms=" + JSON.stringify(JSONObject), true);
 			}
 			
 			function handleResponse(resp)
@@ -72,6 +72,7 @@ require("../../includes/ensure_admin_logon.php");
 					<button type="button" onclick="createGame();">Create Game</button>
 				</div>
 			</form>
+			<a href="admin_main.php">Back to main menu.</a>
 		</main>
 	</body>
 </html>

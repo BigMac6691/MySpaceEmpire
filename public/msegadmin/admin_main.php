@@ -62,6 +62,8 @@ session_start();
 				<h2>What do you want to do today?</h2>
 				<ul>
 					<li><a href="create_game.php">Create new game.</a></li>
+					<li><a href="maintain_components.php">Maintain Buildable Components.</a></li>
+					<li><a href="maintain_industry_component_link.php">Maintain Industry Type to Buildable Component Link.</a></li>
 				</ul>
 				<br />
 				<form action="admin_main.php" method="post">

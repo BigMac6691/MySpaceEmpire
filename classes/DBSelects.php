@@ -27,7 +27,8 @@ class DBSelects extends DBALRoot
 		}
 		elseif($sql_id == "get_user_details") 
 		{
-			$stmt = $this->db->prepare("SELECT * FROM users WHERE alias = ? AND effective <= current_timestamp AND expiry > current_timestamp AND update_uid IS NULL;");
+			$stmt = $this->db->prepare("SELECT P.* FROM players as P, users as U WHERE U.alias = ? AND P.user_id = U.user_id ".
+							"AND U.effective <= current_timestamp AND U.expiry > current_timestamp AND U.update_uid IS NULL;");
 			$stmt->bind_param("s", $p["validated_user"]);
 		}
 		elseif($sql_id == "joinable_games")
@@ -62,9 +63,9 @@ class DBSelects extends DBALRoot
 			$stmt = $this->db->prepare("SELECT * FROM civilization WHERE game_id = ?;");
 			$stmt->bind_param("i", $p["game_id"]);
 		}
-		elseif($sql_id == "get_build_queue_data") // may need to filter to a particular player
+		elseif($sql_id == "get_industry_data") // may need to filter to a particular player
 		{
-			$stmt = $this->db->prepare("SELECT * FROM build_queue WHERE game_id = ?;");
+			$stmt = $this->db->prepare("SELECT * FROM industry WHERE game_id = ?;");
 			$stmt->bind_param("i", $p["game_id"]);
 		}
 		elseif($sql_id == "get_potential_home_planets")
@@ -75,8 +76,9 @@ class DBSelects extends DBALRoot
 		}
 		elseif($sql_id == "get_player_details")
 		{
-			$stmt = $this->db->prepare("SELECT * FROM players WHERE game_id = ? AND user_id = ?;");
-			$stmt->bind_param("ii", $p["game_id"], $_SESSION["validated_user_id"]);
+			$stmt = $this->db->prepare("SELECT U.* FROM players as P, users as U WHERE P.game_id = ? AND P.user_id = U.user_id AND ".
+				"U.effective <= current_timestamp AND U.expiry > current_timestamp AND U.update_uid IS NULL;");
+			$stmt->bind_param("i", $p["game_id"]);
 		}
 		elseif($sql_id == "get_game_data")
 		{

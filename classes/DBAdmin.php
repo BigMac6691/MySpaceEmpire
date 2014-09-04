@@ -10,6 +10,16 @@ class DBAdmin extends DBALRoot
 			$stmt = $this->db->prepare("SELECT * FROM admins WHERE admin_id = ? AND password = ?;");
 			$stmt->bind_param("ss", $p["uid"], $p["password"]);
 		}
+		elseif($sql_id == "list_components")
+		{
+			$stmt = $this->db->prepare("SELECT build_type_id, name FROM build_type WHERE 1;");
+			// $stmt->bind_param("ss", $p["uid"], $p["password"]);
+		}
+		elseif($sql_id == "get_build_type_data")
+		{
+			$stmt = $this->db->prepare("SELECT * FROM build_type WHERE build_type_id = ?;");
+			$stmt->bind_param("i", $p["build_type_id"]);
+		}
 		else
 			$this->handleError(31, $sql_id);
 		
@@ -26,6 +36,11 @@ class DBAdmin extends DBALRoot
 		{
 			$stmt = $this->db->prepare("INSERT INTO game VALUES(?, ?, ?, ?, ?, ?);");
 			$stmt->bind_param("isissi", $p['game_id'], $p['game_name'], $p['game_seed'], $p['game_start'], $p['game_end'], $p['game_turn']);
+		}
+		elseif($sql_id == "create_component")
+		{
+			$stmt = $this->db->prepare("INSERT INTO build_type VALUES(0, ?, ?);");
+			$stmt->bind_param("ss", $p['name'], $p['type_attributes']);
 		}
 		else
 			$this->handleError(21, $sql_id);

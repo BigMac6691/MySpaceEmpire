@@ -30,7 +30,7 @@ tbody
 	top : 25%;
 	left : 50%;
 	width : 70em;
-	height : 24em;
+	height : 20em;
 	margin-left : -35em;
 	visibility : hidden;
 	font-family : Verdana;
@@ -40,7 +40,7 @@ tbody
 .DualListCloseButton
 {
 	position : absolute;
-	top : -1px;
+	top : -2px;
 	right : -1px;
 	border : 1px solid silver;
 	line-height : 120%;
@@ -81,6 +81,17 @@ tbody
 	vertical-align: top;
 	margin-left: 0.5em;
 	margin-right: 0.25em;
+	border: 1px solid green;
+	height : 16em;
+	overflow: auto;	
+}
+
+.NavButtonsTopBottom
+{
+	vertical-align:middle;
+	text-align: center;
+	padding-right: 0;
+	border: 0;
 }
 
 .DualListRotate90
